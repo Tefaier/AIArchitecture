@@ -7,6 +7,6 @@ features:
 
 training:
   random_state: 42
-  n_estimators: 320
-  max_depth: 7
+  n_estimators: 256
+  max_depth: 3
   min_samples_leaf: 2
