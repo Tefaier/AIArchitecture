@@ -1,0 +1,6 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = s3://sandbox-mfti-2026/dvc_data_dir
+    endpointurl = https://storage.yandexcloud.net
+    region = ru-central1
