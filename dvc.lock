@@ -1,14 +1,14 @@
 schema: '2.0'
 stages:
   prepare_dataset:
-    cmd: uv run python -m src.data.prepare_dataset --input datasets/dataset.csv 
-      --output data/processed/clean_tracks.csv --report 
+    cmd: uv run python -m src.data.prepare_dataset --input datasets/dataset.csv
+      --output data/processed/clean_tracks.csv --report
       reports/data_prep_report.json
     deps:
     - path: datasets/dataset.csv
       hash: md5
-      md5: d1a065ee8d412a460b14bcf2871fe054
-      size: 20118031
+      md5: e1047a5ce32e33b00f5e32585dfea9ae
+      size: 20117713
     - path: src/data/prepare_dataset.py
       hash: md5
       md5: aafa98422d969d30580af03a458ca2ed
@@ -23,10 +23,10 @@ stages:
       md5: bbcc124e647c3cfe1c83c6cf15f90376
       size: 445
   prepare_training_data:
-    cmd: uv run python -m src.ml.prepare_training_data --input 
-      data/processed/clean_tracks.csv --train-output 
-      data/features/train_popularity.csv --valid-output 
-      data/features/valid_popularity.csv --report reports/feature_report.json 
+    cmd: uv run python -m src.ml.prepare_training_data --input
+      data/processed/clean_tracks.csv --train-output
+      data/features/train_popularity.csv --valid-output
+      data/features/valid_popularity.csv --report reports/feature_report.json
       --test-size 0.2 --random-state 7 --min-genre-frequency 40
     deps:
     - path: data/processed/clean_tracks.csv
@@ -56,11 +56,11 @@ stages:
       md5: b0f829e7ca6082e61aeb5c795a46a801
       size: 399
   train_popularity_model:
-    cmd: uv run python -m src.ml.train_popularity_model --train 
-      data/features/train_popularity.csv --valid 
-      data/features/valid_popularity.csv --model models/popylarity_model.joblib 
-      --metrics reports/model_metrics.json --predictions 
-      reports/validation_predictions.csv --random-state 42 --n-estimators 256 
+    cmd: uv run python -m src.ml.train_popularity_model --train
+      data/features/train_popularity.csv --valid
+      data/features/valid_popularity.csv --model models/popylarity_model.joblib
+      --metrics reports/model_metrics.json --predictions
+      reports/validation_predictions.csv --random-state 42 --n-estimators 256
       --max-depth 3 --min-samples-leaf 2
     deps:
     - path: data/features/train_popularity.csv
