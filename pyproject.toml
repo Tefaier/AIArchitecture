@@ -1,0 +1,22 @@
+[project]
+name = "dataversioningmfti"
+version = "0.1.0"
+description = "Just for testing"
+requires-python = ">=3.12"
+dependencies = [
+    "dvc==3.66.0",
+    "dvc-s3>=3.3.0",
+    "fastapi>=0.116.1",
+    "joblib>=1.5.2",
+    "numpy>=2.3.0",
+    "pandas>=2.3.0",
+    "pandera>=0.26.1",
+    "pre-commit>=4.5.1",
+    "scikit-learn>=1.7.2",
+    "uvicorn>=0.35.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+]

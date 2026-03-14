@@ -1,0 +1,6 @@
+data/*
+reports/*
+models/*
+.env
+.idea
+__pycache__

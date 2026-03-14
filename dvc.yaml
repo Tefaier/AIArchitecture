@@ -1,0 +1,65 @@
+stages:
+  prepare_dataset:
+    cmd: >-
+      uv run python -m src.data.prepare_dataset
+      --input datasets/dataset.csv
+      --output data/processed/clean_tracks.csv
+      --report reports/data_prep_report.json
+    deps:
+      - src/data/prepare_dataset.py
+      - datasets/dataset.csv
+    outs:
+      - data/processed/clean_tracks.csv
+    metrics:
+      - reports/data_prep_report.json
+  prepare_training_data:
+    cmd: >-
+      uv run python -m src.ml.prepare_training_data
+      --input data/processed/clean_tracks.csv
+      --train-output data/features/train_popularity.csv
+      --valid-output data/features/valid_popularity.csv
+      --report reports/feature_report.json
+      --test-size ${split.test_size}
+      --random-state ${split.random_state}
+      --min-genre-frequency ${features.min_genre_frequency}
+    deps:
+      - src/ml/prepare_training_data.py
+      - data/processed/clean_tracks.csv
+    params:
+      - split.test_size
+      - split.random_state
+      - features.min_genre_frequency
+    outs:
+      - data/features/train_popularity.csv
+      - data/features/valid_popularity.csv
+    metrics:
+      - reports/feature_report.json
+  train_popularity_model:
+    cmd: >-
+      uv run python -m src.ml.train_popularity_model
+      --train data/features/train_popularity.csv
+      --valid data/features/valid_popularity.csv
+      --model models/popylarity_model.joblib
+      --metrics reports/model_metrics.json
+      --predictions reports/validation_predictions.csv
+      --random-state ${training.random_state}
+      --n-estimators ${training.n_estimators}
+      --max-depth ${training.max_depth}
+      --min-samples-leaf ${training.min_samples_leaf}
+    deps:
+      - src/ml/train_popularity_model.py
+      - data/features/train_popularity.csv
+      - data/features/valid_popularity.csv
+    params:
+      - training.random_state
+      - training.n_estimators
+      - training.max_depth
+      - training.min_samples_leaf
+    outs:
+      - models/popylarity_model.joblib
+    metrics:
+      - reports/model_metrics.json
+    plots:
+      - reports/validation_predictions.csv:
+          x: y_true
+          y: y_pred
